@@ -7,6 +7,7 @@
 #include <vector>
 #include <conio.h>
 #include <ctime>
+#include <fstream>
 
 #include "input.h"
 
@@ -22,10 +23,18 @@ struct account
 	std::string _owner;
 };
 
+struct loan
+{
+	int _amount;
+	int _account;
+};
+
 class bank
 {
 public:
 	bank();
+	bank(uint16_t initFund)
+		: _bankFunds(initFund) { }
 	~bank();
 
 	void open_account(const std::string name);
@@ -39,10 +48,21 @@ public:
 
 	void display_transactions(const int accId);
 
-private:
+	void take_loan(const int accId);
 
+	void load_accounts(const std::string & fileName);
+	void save_accounts(const std::string & fileName);
+
+private:
+	template <class A>
+	void report_error(const std::string & msg, A wrongInfo);
+	
+		
 	void set_up_account(account & acc);
 
+	uint16_t _bankFunds;
+
+	std::vector<loan *> _loans;
 	std::vector<account *> _accounts;
 };
 

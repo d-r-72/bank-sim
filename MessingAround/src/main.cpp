@@ -5,14 +5,16 @@
 
 int main()
 {
-	bank bankOfDavid;
+	bank bankOfDavid(1'000'000);
+
+	bankOfDavid.load_accounts("src/accounts.txt");
 
 	bool done = false;
 
 	while (!done)
 	{
 		int ans;
-		printf("\n\n1: open_account\n2: print_account_info\n3: print_bank_accounts\n4: deposit_funds\n5: withdrawal_funds\n6: display_transactions\n7: delete_account\n");
+		printf("1: open_account\n2: print_account_info\n3: print_bank_accounts\n4: deposit_funds\n5: withdrawal_funds\n6: display_transactions\n7: delete_account\n8: take_loan\n");
 		ans = _getch();
 		
 		switch (ans)
@@ -20,14 +22,14 @@ int main()
 		case '1':
 		{
 			std::string name;
-			inCh::get_input(name, "\nPlease enter name of owner: ");
+			in::get_input(name, "\nPlease enter name of owner: ");
 			bankOfDavid.open_account(name);
 			break;
 		}
 		case '2':
 		{
 			int accountId;
-			inCh::get_input(accountId, "\nPlease enter an account number: ");
+			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.print_account_info(accountId);
 			break;
 		}
@@ -37,36 +39,46 @@ int main()
 		case '4':
 		{
 			int accountId;
-			inCh::get_input(accountId, "\nPlease enter an account number: ");
+			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.deposit_funds(accountId);
 			break;
 		}
 		case '5':
 		{
 			int accountId;
-			inCh::get_input(accountId, "\nPlease enter an account number: ");
+			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.withdrawal_funds(accountId);
 			break;
 		}
 		case '6':
 		{
 			int accountId;
-			inCh::get_input(accountId, "\nPlease enter an account number: ");
+			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.display_transactions(accountId);
 			break;
 		}
 		case '7':
 		{
 			int accountId;
-			inCh::get_input(accountId, "\nPlease enter an account number: ");
+			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.delete_account(accountId);
 			break;
 		}
+		case '8':
+			int accountId;
+			in::get_input(accountId, "\nPlease enter an account number: ");
+			bankOfDavid.take_loan(accountId);
+			break;
+		case '9':
+			done = true;
+			break;
 		default:
 			std::cout << "Not an option\n";
 			break;
 		}
 	}
+
+	bankOfDavid.save_accounts("src/accounts.txt");
 
 	int k;
 	std::cin >> k;

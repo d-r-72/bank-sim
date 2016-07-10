@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-namespace inCh
+namespace in
 {
 	template <class U>
 	void get_input(U & ret, const std::string msg)
