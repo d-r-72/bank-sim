@@ -52,12 +52,15 @@ public:
 
 	void load_accounts(const std::string & fileName);
 	void save_accounts(const std::string & fileName);
+	
+	void transfer_funds(const int fAccId, const int sAccid);
 
 private:
 	template <class A>
-	void report_error(const std::string & msg, A wrongInfo);
-	
+	void report_error(const std::string & msg, A wrongInfo);	
 		
+	bool account_in_bank(const int accId);
+
 	void set_up_account(account & acc);
 
 	uint16_t _bankFunds;

@@ -8,13 +8,12 @@ int main()
 	bank bankOfDavid(1'000'000);
 
 	bankOfDavid.load_accounts("src/accounts.txt");
-
 	bool done = false;
 
 	while (!done)
 	{
 		int ans;
-		printf("1: open_account\n2: print_account_info\n3: print_bank_accounts\n4: deposit_funds\n5: withdrawal_funds\n6: display_transactions\n7: delete_account\n8: take_loan\n");
+		printf("1: open_account\n2: print_account_info\n3: print_bank_accounts\n4: deposit_funds\n5: withdrawal_funds\n6: display_transactions\n7: delete_account\n8: take_loan\n9: transfer_funds\n");
 		ans = _getch();
 		
 		switch (ans)
@@ -65,11 +64,22 @@ int main()
 			break;
 		}
 		case '8':
+		{
 			int accountId;
 			in::get_input(accountId, "\nPlease enter an account number: ");
 			bankOfDavid.take_loan(accountId);
 			break;
+		}
 		case '9':
+		{
+			int fId, sId;
+			in::get_input(fId, "\nPlease enter your account number: ");
+			in::get_input(sId, "\nPlease enter the other accounts account id: ");
+			bankOfDavid.transfer_funds(fId, sId);
+			break;
+		}
+		case 'q':
+		case 'Q':
 			done = true;
 			break;
 		default:
