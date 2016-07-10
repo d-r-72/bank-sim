@@ -6,6 +6,9 @@
 #include <cstdlib>
 #include <vector>
 #include <conio.h>
+#include <ctime>
+
+#include "input.h"
 
 struct account 
 {
@@ -14,6 +17,8 @@ struct account
 	int _accId;
 	int _pin;
 
+	std::vector<std::string> _transactionHistory;
+
 	std::string _owner;
 };
 
@@ -21,21 +26,22 @@ class bank
 {
 public:
 	bank();
-	bank(uint16_t startFund)
-		: _bankFunds(startFund) {}
 	~bank();
 
 	void open_account(const std::string name);
+	void delete_account(const int accId);
+
 	void print_account_info(const int accId);
-	void deposit_funds();
+	void print_bank_accounts();
+	
+	void deposit_funds(const int accId);
+	void withdrawal_funds(const int accId);
+
+	void display_transactions(const int accId);
 
 private:
-	template <class U>
-	void get_input(U & ret, const std::string msg);
 
 	void set_up_account(account & acc);
-
-	uint16_t _bankFunds;
 
 	std::vector<account *> _accounts;
 };
