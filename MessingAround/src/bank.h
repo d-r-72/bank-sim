@@ -33,8 +33,10 @@ class bank
 {
 public:
 	bank();
-	bank(uint16_t initFund)
-		: _bankFunds(initFund) { }
+	bank(uint16_t initFund, const std::string & saveFile)
+		: _bankFunds(initFund) { 
+		_saveFile.open(saveFile, std::ios_base::app);
+	}
 	~bank();
 
 	void open_account(const std::string name);
@@ -51,19 +53,23 @@ public:
 	void take_loan(const int accId);
 
 	void load_accounts(const std::string & fileName);
-	void save_accounts(const std::string & fileName);
+	void save_accounts();
 	
 	void transfer_funds(const int fAccId, const int sAccid);
 
+	void clean_up();
+
 private:
-	template <class A>
-	void report_error(const std::string & msg, A wrongInfo);	
+	template <typename T>
+	void report_error(const std::string & msg, T wrongInfo);
 		
 	bool account_in_bank(const int accId);
 
 	void set_up_account(account & acc);
 
 	uint16_t _bankFunds;
+
+	std::ofstream _saveFile;
 
 	std::vector<loan *> _loans;
 	std::vector<account *> _accounts;

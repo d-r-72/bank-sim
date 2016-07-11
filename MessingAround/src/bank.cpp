@@ -4,13 +4,13 @@ bank::bank()
 {
 }
 
-
 bank::~bank()
 {
+	clean_up();
 }
 
-template <class A>
-void bank::report_error(const std::string & msg, A wrongInfo)
+template <typename T>
+void bank::report_error(const std::string & msg, T wrongInfo)
 {
 	std::cout << msg << wrongInfo << std::endl;
 	printf("Enter any key to return...\n");
@@ -53,16 +53,16 @@ void bank::delete_account(const int accId)
 {
 	if (account_in_bank(accId))
 	{
-		for (auto i : _accounts)
+		for (int i = 0; i < _accounts.size(); i++)
 		{
-			if (i->_accId == accId)
+			if (_accounts[i]->_accId == accId)
 			{
 				int pin;
 				bool done = false;
 				while (!done)
 				{
 					in::get_input(pin, "Please enter the accounts pin: ");
-					if (pin == i->_pin)
+					if (pin == _accounts[i]->_pin)
 					{
 						char a;
 						in::get_input(a, "Are you sure (y,n)");
@@ -72,12 +72,8 @@ void bank::delete_account(const int accId)
 						case 'y':
 						case 'Y':
 						{
-							i->_accId = 0;
-							i->_funds = 0;
-							i->_debt = 0;
-							i->_owner = "";
-							i->_pin = 0;
-							i->_transactionHistory.clear();
+							_accounts[i] = _accounts.back();
+							_accounts.pop_back();
 							break;
 						}
 						default:
@@ -282,22 +278,12 @@ void bank::load_accounts(const std::string & fileName)
 	}
 }
 
-void bank::save_accounts(const std::string & fileName)
+void bank::save_accounts()
 {
-	std::ofstream file(fileName);
-
-	std::string name;
-	int accId;
-	int pin;
-	int funds;
-	int debt;
-
 	for (int i = 0; i < _accounts.size(); i++)
 	{
-		file << _accounts[i]->_owner << ' ' << _accounts[i]->_accId << ' ' << _accounts[i]->_pin << ' ' << _accounts[i]->_debt << ' ' << _accounts[i]->_funds << std::endl;
+		_saveFile << _accounts[i]->_owner << ' ' << _accounts[i]->_accId << ' ' << _accounts[i]->_pin << ' ' << _accounts[i]->_debt << ' ' << _accounts[i]->_funds << std::endl;
 	}
-
-	file.close();
 }
 
 void bank::transfer_funds(const int fAccId, const int sAccid)
@@ -335,6 +321,23 @@ void bank::transfer_funds(const int fAccId, const int sAccid)
 			return;
 		}
 	}
+}
+
+void bank::clean_up()
+{
+	for (int i = 0; i < _loans.size(); i++)
+	{
+		delete _loans[i];
+	}
+
+	_loans.clear();
+
+	for (int i = 0; i < _accounts.size(); i++)
+	{
+		delete _accounts[i];
+	}
+
+	_accounts.clear();
 }
 
 void bank::set_up_account(account & acc)
